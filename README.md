@@ -48,3 +48,80 @@ OR run JustGifItApplication in intellij
 
 shows gui
 
+## devtools auto restart
+
+```
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+```
+
+Intellij
+Edit - macros - start macro recording
+File - save all
+Build - Build project
+Edit - macros - stop macro recording
+name - autoBuild
+Preferences
+save macro as CMD D
+then
+if mvn spring-boot:run is running
+if you change a file and type CMD D
+the program will auto restart.
+nice.
+
+## disable properties
+
+application.properties
+ newer versions of spring-boot use these properties rather than above
+ spring.servlet.multipart.max-file-size=128KB
+ spring.servlet.multipart.max-request-size=128KB
+
+ this disables the icon only
+    spring.mvc.favicon.enabled=false
+
+
+## disable stuff in application class
+
+@SpringBootApplication(exclude = {JacksonAutoConfiguration.class,
+        JmxAutoConfiguration.class, WebSocketAutoConfiguration.class})
+public class JustGifItApplication {
+. . .
+    @Bean
+    public FilterRegistrationBean deRegisterHiddenHttpMethodFilter
+            (HiddenHttpMethodFilter filter) {
+        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        bean.setEnabled(false);
+        return bean;
+    }
+    @Bean
+    public FilterRegistrationBean deRegisterHttpPutFormContentFilter
+            (HttpPutFormContentFilter filter) {
+        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        bean.setEnabled(false);
+        return bean;
+    }
+    @Bean
+    public FilterRegistrationBean deRegisterRequestContextFilter
+            (RequestContextFilter filter) {
+        FilterRegistrationBean bean = new FilterRegistrationBean(filter);
+        bean.setEnabled(false);
+        return bean;
+    }
+
+## debug
+Add --debug as program argument or -Ddebug VM option.
+
+Then when the app starts up you will see the exclusions you have set:
+```
+Exclusions:
+-----------
+
+   org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
+
+   org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration
+
+   org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration
+```
