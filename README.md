@@ -6,3 +6,45 @@ Backend: Spring Boot + JavaCV + Animated-Gif-Lib
 
 ## License
 Version 2.0 of the Apache License
+
+## Intellij Community
+File - Project Structure
+    set sdk 1.8
+
+## Spring Boot: Efficient Development, Configuration, and Deployment
+
+https://app.pluralsight.com/player?course=spring-boot-efficient-development-configuration-deployment&author=dustin-schultz&name=spring-boot-efficient-development-configuration-deployment-m0&clip=0&mode=live
+
+## run start.spring.io from localhost to generate starter project
+
+git clone git@github.com:spring-io/start.spring.io.git
+
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/ mvn clean install
+
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/ mvn spring-boot:run
+
+
+http://localhost:8080/
+
+shultz.dustin.io
+just-gif-it
+web actuator
+curl start.spring.io		# curl access to above web spring start project generator
+
+## mp4 downloaded to convert to gif by app
+
+16s -> 29s https://vimeo.com/47201852 saved as FunnyPhobias.mp4
+
+## curl command to POST file
+
+curl -F file=@FunnyPhobias.mp4 -F start=0 -F end=0 -F speed=1 -F repeat=0 localhost:8080/upload
+https://github.com/dustinschultz/just-gif-it
+
+## run up app and gui
+mvn spring-boot:run
+OR run JustGifItApplication in intellij
+
+```http://localhost:8080/```
+
+shows gui
+
