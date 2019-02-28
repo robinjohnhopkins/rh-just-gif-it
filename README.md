@@ -278,3 +278,117 @@ relaxedNames = true
 
 ```
 
+## Additional Conditions
+```
+• @ConditionalOnJava
+• @ConditionalOnJndi
+• @ConditionalOnResource
+• @ConditionlOnExpression
+• @ConditionlOnWebApplication
+• @ConditionalOnNotWebApplication
+```
+
+## .properties
+```
+# A list
+numbers[0]=one 
+numbers[1]=two
+# Inline list
+numbers: [one,two]
+```
+## .yml
+```
+# A list
+numbers:
+  - one
+  - two
+# Inline list
+numbers=one,two
+```
+
+## @ConfigurationProperties
+
+a. Annotate with @ConfigurationProperties
+b. Define getters & setters (JavaBean Spec)
+c. Annotate with @Component
+    i. Can also use @EnableConfigurationProperties
+
+
+```
+my.feature-enabled=true
+
+my:
+ feature-enabled: true
+```
+
+```
+#@Component
+#@ConfigurationProperties(prefix = "my")
+#public class MyConfig {
+#
+#    @NotNull
+#    @Pattern( regexp = "my.{5}zip", message = "regex check should match my?{5}zip")
+#    private String myString;
+#    private long myLong;
+#    private boolean myBoolean;
+
+my:
+  my-string: my12345zip
+  myLong: 1234.5
+  my-boolean: true
+```
+
+## Pimp your Charts with the fancy XKCD Style
+https://devops.datenkollektiv.de/pimp-your-charts-with-the-fancy-xkcd-style.html
+
+
+## Spring Boot – Custom Banner
+
+To add a custom banner in Spring Boot application, create a banner.txt file and put it into the resources folder.
+
+The following can be used to generate a header:
+
+https://github.com/acanda/spring-banner-plugin
+
+
+#### Usage
+```
+<build>
+    <plugins>
+        <plugin>
+            <groupId>ch.acanda.maven</groupId>
+            <artifactId>spring-banner-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+                <execution>
+                    <id>generate-spring-banner</id>
+                    <phase>generate-resources</phase> (1)
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration> (2)
+                <text>${project.name}</text>
+                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                <filename>banner.txt</filename>
+                <includeInfo>true</includeInfo>
+                <info>Version: ${application.version}, Server: ${server.address}:${server.port}, Active Profiles: ${spring.active.profiles}</info>
+                <version>${project.version}</version>
+                <color>default</color>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+```
+ _  __  ___            ____                                        _         _
+| |/ / ( _ )  ___     / ___|  __ _  _ __    __ _   ___  _ __ ___  (_) _ __  (_)
+| ' /  / _ \ / __|   | |     / _` || '_ \  / _` | / _ \| '_ ` _ \ | || '_ \ | |
+| . \ | (_) |\__ \ _ | |___ | (_| || |_) || (_| ||  __/| | | | | || || | | || |
+|_|\_\ \___/ |___/(_) \____| \__,_|| .__/  \__, | \___||_| |_| |_||_||_| |_||_|
+                                   |_|     |___/
+Version: 1.1, Server: localhost:1234.
+```
+

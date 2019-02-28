@@ -9,10 +9,27 @@ multipart:
 # spring.servlet.multipart.max-request-size=128KB
 
 logging:
-  level.: DEBUG
+  level.: INFO
 
 ## this disables the icon only
 spring:
   mvc:
     favicon:
       enabled: false
+
+#@Component
+#@ConfigurationProperties(prefix = "my")
+#public class MyConfig {
+#
+#    @NotNull
+#    @Pattern( regexp = "my.{5}zip", message = "regex check should match my?{5}zip")
+#    private String myString;
+#    private long myLong;
+#    private boolean myBoolean;
+
+my:
+  my-string: my12345zip
+  myLong: 1234.5
+  my-boolean: true
+  art-string: K8s
+  enable-art-string: false

@@ -28,7 +28,12 @@
         <node.version>v4.3.0</node.version>
         <npm.version>3.7.2</npm.version>
         <frontend.maven.plugin.version>0.0.28</frontend.maven.plugin.version>
-    </properties>
+        <application.version>1.1</application.version>
+        <server.address>localhost</server.address>
+        <server.port>1234</server.port>
+        <bannerText>K8s.Capgemini</bannerText>
+
+</properties>
 
     <dependencies>
         <dependency>
@@ -126,7 +131,31 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>ch.acanda.maven</groupId>
+                <artifactId>spring-banner-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-spring-banner</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<text>${project.name}</text>-->
+                    <text>${bannerText}</text>
+                    <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                    <!--<filename>banner.txt</filename>-->
+                    <includeInfo>true</includeInfo>
+                    <info>Version: ${application.version}, Server: ${server.address}:${server.port}.</info>
+                    <!--<version>${project.version}</version>-->
+                    <color>default</color>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
