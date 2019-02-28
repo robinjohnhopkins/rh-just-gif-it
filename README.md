@@ -105,7 +105,8 @@ You will need to add
 to pom.
 
 
-\## yaml properties
+## yaml properties
+```
 \# configure auto-configured MultipartConfigElement
 multipart:
   max-file-size: 50MB
@@ -124,12 +125,12 @@ spring:
   mvc:
     favicon:
       enabled: false
-
-
+```
 
 
 ## disable stuff in application class
 
+```
 @SpringBootApplication(exclude = {JacksonAutoConfiguration.class,
         JmxAutoConfiguration.class, WebSocketAutoConfiguration.class})
 public class JustGifItApplication {
@@ -155,18 +156,23 @@ public class JustGifItApplication {
         bean.setEnabled(false);
         return bean;
     }
+```
 
 ## debug
-Add --debug as program argument or -Ddebug VM option.
+Add ```--debug``` as program argument or ```-Ddebug``` VM option.
+
 OR
+```
 application.properties
     logging.level.=DEBUG
+```
 OR
-application.yml
 
+application.yml
+```
 logging:
   level.:DEBUG
-
+```
 
 Then when the app starts up you will see the exclusions you have set:
 ```
