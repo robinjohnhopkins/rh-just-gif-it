@@ -1,5 +1,5 @@
 ## About
-Start of Just-Gif-It for Pluralsight course Spring Boot: Efficient Development, Configuration, and Deployment
+Notes added to Just-Gif-It for Pluralsight course Spring Boot: Efficient Development, Configuration, and Deployment
 
 UI: AngularJS + WebPack + ES6 (ES2015)
 Backend: Spring Boot + JavaCV + Animated-Gif-Lib
@@ -457,7 +457,7 @@ d) System.getProperties()
 e) OS environment vars
 ```
 
-##RandomValuePropertySource
+## RandomValuePropertySource
 ```
   ${random.*} replacements •“ * ” can be one of
   A. value
@@ -498,7 +498,7 @@ e) OS environment vars
 7}
 ```
 
-##Introducing Spring Boot Actuator
+## Introducing Spring Boot Actuator
 ```
 •Production ready monitoring and   management features out of the box
 •Health, autoconfig report, beans, etc •HTTP or JMX
