@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.File;
 
 @Component
 @ConfigurationProperties(prefix = "my")
@@ -18,6 +19,10 @@ public class MyConfig {
 
     private String artString;
     private boolean enableArtString;
+    /**
+     * The location of the animated gifs
+     */
+    private File gifLocation;
 
     public String getArtString() {
         return artString;
@@ -57,5 +62,13 @@ public class MyConfig {
 
     public void setMyBoolean(boolean myBoolean) {
         this.myBoolean = myBoolean;
+    }
+
+    public File getGifLocation() {
+        return gifLocation;
+    }
+
+    public void setGifLocation(File gifLocation) {
+        this.gifLocation = gifLocation;
     }
 }

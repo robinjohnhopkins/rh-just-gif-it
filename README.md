@@ -392,3 +392,193 @@ https://github.com/acanda/spring-banner-plugin
 Version: 1.1, Server: localhost:1234.
 ```
 
+## SPRING_APPLICATION_JSON env var
+This environment var will override any properties found.
+
+```
+SPRING_APPLICATION_JSON {"my":{"my-long":"9876"}}
+```
+
+## Commandline props override
+
+prefix any property with a double dash
+```
+--server.port=9000
+--spring.config.name=config
+--debug
+
+System.getenv("SPRING_APPLICATION_JSON")
+```
+
+## config third party Beans
+```
+@Configuration
+public class MyConfig 3{
+ @Bean
+ @ConfigurationProperties(
+ prefix = "config.some-bean")
+ public SomeBean someBean()
+ {
+  // Has getters & setters
+  return new SomeBean()
+ }
+}
+```
+application.properties
+```
+ # someBean has setFirstName method
+ config.some-bean.first-name=Dustin
+ # someBean has setLastName method
+```
+
+## Relaxed Configuration Names
+
+Camel Case
+
+featureEnabled
+
+Dash Notation
+
+feature-enabled
+
+Underscore
+
+PREFIX_FEATURE_ENABLED
+
+
+## StandardServletEnvironment
+
+A hierarchy within itself
+```
+a) ServletConfig init parameters
+b) ServletContext init parameters
+c) JNDI attributes
+d) System.getProperties()
+e) OS environment vars
+```
+
+##RandomValuePropertySource
+```
+  ${random.*} replacements •“ * ” can be one of
+  A. value
+  B. int
+  C. long
+  D. int(<number>)
+  E. int[<num1>,<num2>] 
+```
+
+## application.properties / YAML + Variants
+```
+•Look for profile-specific configuration 1st
+• application-{profile}.properties
+• application-{profile}.yml
+•Look for generic configuration 2nd
+•application.properties / application.yml
+•Check these locations
+•$CWD/config AND $CWD •classpath:/config AND classpath:
+```
+
+## @PropertySource
+```
+1 @SpringBootApplication
+2 @PropertySource("/some/path/foo.properties")
+3 public class MyApplication {
+4 ...
+5}
+```
+
+## Default Properties
+```
+1 @SpringBootApplication
+2 public class MyApplication {
+3 public static void main(String args[])
+4{
+5 SpringApplication.setDefaultProperties(...)
+6}
+7}
+```
+
+##Introducing Spring Boot Actuator
+```
+•Production ready monitoring and   management features out of the box
+•Health, autoconfig report, beans, etc •HTTP or JMX
+•Feed into Nagios / Zabbix / New Relic •Easy to add your own
+```
+```
+<dependency> 
+    <groupId>org.springframework.boot</groupId> 
+    <artifactId>spring-boot-starter-actuator</artifactId> 
+ </dependency>
+ ```
+
+ ## Builtin Production Ready Endpoints
+ ```
+ /autoconfig for report
+ /dump for memory dump
+ /beans for all beans
+ /health to check application
+
+ {"status":"UP","diskSpace":{"status":"UP","total":250790436864,"free":124369686528,"threshold":10485760}}
+
+ /configprops  for all config
+
+ Many more ...
+ http://docs.spring.io/ spring-boot/docs/current/ reference/htmlsingle/ #production-ready
+ ```
+
+## Autoconfigured HealthIndicator’s RedisHealthIndicator
+
+* DiskSpaceHealthIndicator
+* DataSourceHealthIndicator
+* ElasticsearchHealthIndicator
+
+http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/ #_auto_configured_healthindicators
+
+
+## Custom HealthIndicator’s CassandraHealthIndicator
+* DiskSpaceHealthIndicator
+* DataSourceHealthIndicator
+* ElasticsearchHealthIndicator
+* MyCustomHealthIndicator
+
+## Custom health
+```
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+import schultz.dustin.io.services.MyConfig;
+
+import javax.inject.Inject;
+
+@Component
+public class JustGifItHealthIndicator implements HealthIndicator {
+
+@Inject
+private MyConfig properties;
+
+    @Override
+    public Health health() {
+        if (!properties.getGifLocation().canWrite()) {
+            return Health.down().build();
+        }
+
+        return Health.up().build();
+    }
+}
+```
+
+`curl -u user:a1c56301-47bd-aaaa-aaaaaaaaaaaa http://localhost:8080/health`
+
+where `password` is found in logs
+
+
+```
+{"status":"UP","justGifIt":{"status":"UP"},"diskSpace":{"status":"UP","total":250790436864,"free":124032151552,"threshold":10485760}}
+```
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html
+
+If Spring Security is on the classpath, then web applications are secured by default. Spring Boot relies on Spring Security’s content-negotiation strategy to determine whether to use httpBasic or formLogin. To add method-level security to a web application, you can also add @EnableGlobalMethodSecurity with your desired settings. Additional information can be found in the Spring Security Reference Guide.
+
+
+

@@ -28,8 +28,9 @@ spring:
 #    private boolean myBoolean;
 
 my:
-  my-string: my12345zip
+  my-string: my${random.int[50000,99999]}zip
   myLong: 1234.5
   my-boolean: true
   art-string: K8s
   enable-art-string: false
+  gifLocation: ${java.io.tmpdir}
