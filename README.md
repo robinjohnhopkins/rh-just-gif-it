@@ -581,4 +581,70 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sec
 If Spring Security is on the classpath, then web applications are secured by default. Spring Boot relies on Spring Security’s content-negotiation strategy to determine whether to use httpBasic or formLogin. To add method-level security to a web application, you can also add @EnableGlobalMethodSecurity with your desired settings. Additional information can be found in the Spring Security Reference Guide.
 
 
+## maven docker plugin
+
+https://github.com/spotify/docker-maven-plugin
+
+This led to the creation of a second Maven plugin for building docker images, dockerfile-maven, which we think offers a simpler mental model of working with Docker from Maven, for all of the reasons outlined in dockerfile-maven's README.
+
+https://github.com/spotify/dockerfile-maven
+
+```
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-version}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>robinjohnhopkins/justgifit</repository>
+                    <tag>latest</tag>
+                    <!--<tag>${project.version}</tag>-->
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+```
+
+This configures the actual plugin to build your image with mvn package and push it with mvn deploy. Of course you can also say mvn dockerfile:build explicitly.
+
+
+A corresponding Dockerfile could look like:
+
+```
+FROM openjdk:8-jre
+MAINTAINER David Flemström <dflemstr@spotify.com>
+
+ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/myservice/myservice.jar"]
+
+# Add Maven dependencies (not shaded into the artifact; Docker-cached)
+ADD target/lib           /usr/share/myservice/lib
+# Add the service itself
+ARG JAR_FILE
+ADD target/${JAR_FILE} /usr/share/myservice/myservice.jar
+```
+
+Important note
+
+The most Maven-ish way to reference the build artifact would probably be to use the project.build.directory variable for referencing the 'target'-directory. However, this results in an absolute path, which is not supported by the ADD command in the Dockerfile. Any such source must be inside the context of the Docker build and therefor must be referenced by a relative path. See https://github.com/spotify/dockerfile-maven/issues/101
+
+Do not use ${project.build.directory} as a way to reference your build directory.
+
+
+```
+docker run -it -p80:8080 robinjohnhopkins/justgifit:latest
+```
+
+http://localhost
+
+Nice
+
 
