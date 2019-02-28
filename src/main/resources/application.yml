@@ -1,0 +1,18 @@
+# configure auto-configured MultipartConfigElement
+multipart:
+  max-file-size: 50MB
+  max-request-size: 50MB
+  location: ${java.io.tmpdir}
+
+# newer versions of spring-boot use these properties rather than above
+# spring.servlet.multipart.max-file-size=128KB
+# spring.servlet.multipart.max-request-size=128KB
+
+logging:
+  level.: DEBUG
+
+## this disables the icon only
+spring:
+  mvc:
+    favicon:
+      enabled: false

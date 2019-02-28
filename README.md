@@ -57,7 +57,7 @@ shows gui
             <optional>true</optional>
         </dependency>
 ```
-
+```
 Intellij
 Edit - macros - start macro recording
 File - save all
@@ -66,21 +66,66 @@ Edit - macros - stop macro recording
 name - autoBuild
 Preferences
 save macro as CMD D
+
 then
 if mvn spring-boot:run is running
-if you change a file and type CMD D
+and if you change a file and type CMD D
 the program will auto restart.
 nice.
+```
+
 
 ## disable properties
-
+```
 application.properties
- newer versions of spring-boot use these properties rather than above
+ #newer versions of spring-boot use these properties rather than above
  spring.servlet.multipart.max-file-size=128KB
  spring.servlet.multipart.max-request-size=128KB
 
- this disables the icon only
-    spring.mvc.favicon.enabled=false
+ #this disables the icon only
+ spring.mvc.favicon.enabled=false
+```
+
+## intellij command completion
+It is important to turn off spotlight search
+```
+Settings - Spotlight - shortcuts untick Show spotlight search
+```
+
+Then install Spring Assistant
+
+You will need to add
+```
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+```
+to pom.
+
+
+\## yaml properties
+\# configure auto-configured MultipartConfigElement
+multipart:
+  max-file-size: 50MB
+  max-request-size: 50MB
+  location: ${java.io.tmpdir}
+
+\# newer versions of spring-boot use these properties rather than above
+\# spring.servlet.multipart.max-file-size=128KB
+\# spring.servlet.multipart.max-request-size=128KB
+
+logging:
+  level.: DEBUG
+
+\## this disables the icon only
+spring:
+  mvc:
+    favicon:
+      enabled: false
+
+
 
 
 ## disable stuff in application class
@@ -113,6 +158,15 @@ public class JustGifItApplication {
 
 ## debug
 Add --debug as program argument or -Ddebug VM option.
+OR
+application.properties
+    logging.level.=DEBUG
+OR
+application.yml
+
+logging:
+  level.:DEBUG
+
 
 Then when the app starts up you will see the exclusions you have set:
 ```
@@ -125,3 +179,96 @@ Exclusions:
 
    org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration
 ```
+
+## Presence or Absence of Class on Classpath
+```
+@ConditionalOnClass
+
+Attributes
+
+[]
+name = { "a.b.c.Foo" }
+
+[]
+value = { Foo.class }
+
+@ConditionalOnMissingClass
+Attributes
+
+[]
+name = { "a.b.c.Foo" }
+
+```
+
+
+## Presence or Absence of Defined Bean
+```
+@ConditionalOnBean
+
+Attributes
+
+[]
+name = { “dataSource” }
+
+[]
+value = { Foo.class }
+
+[]
+type = { “a.b.c.Foo” }
+
+[]
+annotation = { Foo.class }
+
+enum
+search = { ALL }
+```
+
+```
+@ConditionalOnMissingBean
+
+Attributes
+
+[]
+name = { “dataSource” }
+ []
+value = { Foo.class }
+
+enum
+type = { “a.b.c.Foo” }
+ []
+annotation = { Foo.class }
+
+[]
+search = { ALL }
+ []
+ignored = { “a.b.c.Foo” }
+
+[]
+ignoredType = { Foo.class }
+```
+
+## Presence or Absence of a Property Having Value
+```
+@ConditionalOnProperty
+Attributes
+
+[]
+name = { “my-property” }
+
+[]
+value = { “my-property” }
+
+String
+havingValue = “foo”
+
+[]
+prefix = { “some.prefix” }
+
+boolean
+matchIfMissing = false
+
+boolean
+relaxedNames = true
+
+```
+
