@@ -647,4 +647,15 @@ http://localhost
 
 Nice
 
+## deploy to aws
+
+login to aws cli
+$(aws ecr get-login --no-include-email --region us-east-2)
+
+docker build -t robinjohnhopkins/justgifit .
+docker tag robinjohnhopkins/justgifit:latest 433651427572.dkr.ecr.us-east-2.amazonaws.com/robinjohnhopkins/justgifit:latest
+docker push 433651427572.dkr.ecr.us-east-2.amazonaws.com/robinjohnhopkins/justgifit:latest
+
+deploy using ECS
+
 
