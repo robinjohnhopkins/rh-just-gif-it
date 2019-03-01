@@ -656,6 +656,51 @@ docker build -t robinjohnhopkins/justgifit .
 docker tag robinjohnhopkins/justgifit:latest 433651427572.dkr.ecr.us-east-2.amazonaws.com/robinjohnhopkins/justgifit:latest
 docker push 433651427572.dkr.ecr.us-east-2.amazonaws.com/robinjohnhopkins/justgifit:latest
 
-deploy using ECS
+deploy using ECS Clusters
 
+https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/clusters
+
+click Get Started rather than Create Cluster and follow through steps.
+
+## kubectl k8s
+
+docker push robinjohnhopkins/justgifit:latest
+
+kubectl get all
+
+kubectl delete <stuff from above>
+
+kubectl create -f svc.yml
+
+kubectl create -f deploy.yml
+
+kubectl get all
+
+kubectl logs pod/justgifit-deploy-7786c6c568-4kz2l
+ _  __  ___            ____                                        _         _
+| |/ / ( _ )  ___     / ___|  __ _  _ __    __ _   ___  _ __ ___  (_) _ __  (_)
+| ' /  / _ \ / __|   | |     / _` || '_ \  / _` | / _ \| '_ ` _ \ | || '_ \ | |
+| . \ | (_) |\__ \ _ | |___ | (_| || |_) || (_| ||  __/| | | | | || || | | || |
+|_|\_\ \___/ |___/(_) \____| \__,_|| .__/  \__, | \___||_| |_| |_||_||_| |_||_|
+                                   |_|     |___/
+
+. . .
+
+## check a GET rest end point in browser
+```
+minikube service list
+|-------------|----------------------|---------------------------|
+|  NAMESPACE  |         NAME         |            URL            |
+|-------------|----------------------|---------------------------|
+| default     | justgifit-svc        | http://192.168.64.2:30001 |
+| default     | kubernetes           | No node port              |
+| kube-system | kube-dns             | No node port              |
+| kube-system | kubernetes-dashboard | No node port              |
+|-------------|----------------------|---------------------------|
+```
+
+Here the justgifit-svc  has exposed the internal port 8080 to external port 30001.
+Thus you can try the following endpont in a browser.
+
+http://192.168.x.x:30001
 
